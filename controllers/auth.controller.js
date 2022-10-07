@@ -1,7 +1,8 @@
 const UserModel = require('../models/user.model');
+//On appel nos fonctions signUpErrors, signInErrors et de la gestion d'érreurs dépuis le dossier utils
+const { signUpErrors, signInErrors } = require('../utils/errors.utils');
 //jsonwebtoken jout le rôle des sessions propre à chaque utilisateur comme avec php
 const jwt = require('jsonwebtoken');
-// const { signUpErrors, signInErrors } = require('../utils/errors.utils');
 
 //Le nombre de jour ou le token est valide: Nous on a choisie 3 jours
 const maxAge = 3 * 24 * 60 * 60 * 1000;
@@ -23,8 +24,9 @@ module.exports.signUp = async(req, res) => {
         //Comme reponse, on renvoit juste l'id de l'utilisateur pour lui dire que ça a marché
         res.status(201).json({ user: user._id });
     } catch (err) {
-        // const errors = signUpErrors(err);
-        res.status(200).send({ err })
+        //signUpErrors est une fonction que nous avons crée dans le fichier errors.utils.js du dossier utils
+        const errors = signUpErrors(err)
+        res.status(200).send({ errors })
     }
 }
 
@@ -41,9 +43,10 @@ module.exports.signIn = async(req, res) => {
         //On se fait un status 200 avec les infos pour dire que ça a marché
         res.status(200).json({ user: user._id })
     } catch (err) {
-        // const errors = signInErrors(err);
-        //On se fait un status 200 en renvoyant l'erreur si ça n'a pas marché
-        res.status(200).json({ err });
+        //signInErrors est une fonction que nous avons crée dans le fichier errors.utils.js du dossier utils
+        const errors = signInErrors(err)
+            //On se fait un status 200 en renvoyant l'erreur si ça n'a pas marché
+        res.status(200).json({ errors });
     }
 }
 
