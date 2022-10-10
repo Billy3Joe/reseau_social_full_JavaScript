@@ -36,7 +36,7 @@ module.exports.signIn = async(req, res) => {
 
     try {
         const user = await UserModel.login(email, password);
-        //On utilise notre token crée plus haut en passant en paramètre l'id de l'utilisateur qui retournera par la suite après la connexion le même id
+        //On utilise notre token généré plus haut en passant en paramètre l'id de l'utilisateur qui retournera par la suite après la connexion le même id
         const token = createToken(user._id);
         //On met dans les cookie le nom du cookie ('jwt'), le token httpOnly qui est la sécurité du token et maxeAge qui est la durée de vie du cookie
         res.cookie('jwt', token, { httpOnly: true, maxAge });
